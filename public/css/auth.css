@@ -1,0 +1,38 @@
+:root {
+    --color-primary: #504acb; 
+    --color-hover-primary: #533ec0;
+}
+
+
+body {
+    background-image: url("../img/bg.png");
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    height: 100vh; 
+    margin: 0; 
+}
+
+a,
+.color-primary{
+    color: var(--color-primary);
+}
+
+a:hover,
+.color-primary:hover{
+    color: var(--color-hover-primary);
+}
+
+.bg-primary,
+.btn-primary{
+    background-color: var(--color-primary);
+}
+
+.bg-primary:hover,
+.btn-primary:hover{
+    background-color: var(--color-hover-primary);
+}
+
+.rounded-custom {
+    border-radius: 30px;
+}
