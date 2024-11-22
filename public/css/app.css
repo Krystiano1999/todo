@@ -108,7 +108,7 @@ header{
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px; 
 }
-nav .nav-link{
+nav .nav-link,.nav .nav-link:active{
     color: var(--color-background);
     background-color: transparent;
     font-weight: 400;
