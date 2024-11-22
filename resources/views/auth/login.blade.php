@@ -3,10 +3,10 @@
 @section('title', 'Logowanie')
 
 @section('content')
-<div class="d-flex align-items-center justify-content-center bg-white rounded-custom shadow px-3 py-4">
+<div class="d-flex align-items-center justify-content-center bg-white rounded-custom shadow px-2 py-4">
     <div class="row w-100 justify-content-center">
         <div class="col-md-6 col-12">
-            <div class="py-4 px-5">
+            <div class="p-4">
                 <h2 class="mb-4 text-start">Logowanie</h2>
                 <form action="{{ route('login') }}" method="POST">
                     @csrf
@@ -32,7 +32,3 @@
     </div>
 </div>
 @endsection
-
-@push('scripts')
-<script src="{{ asset('js/auth.js') }}"></script>
-@endpush

@@ -26,7 +26,7 @@
         window.sessionError = @json(session('error'));
         window.validationErrors = @json($errors->all());
     </script>
-    
-    @stack('scripts')
+
+    <script src="{{ asset('js/auth.js') }}"></script>
 </body>
 </html>

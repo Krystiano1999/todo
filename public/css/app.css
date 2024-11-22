@@ -1,0 +1,140 @@
+:root {
+    --color-primary: #504acb; 
+    --color-hover-primary: #533ec0;
+    --color-contrast: #afb534;
+    --color-background: #efefef;
+    --color-header: #fefefe;
+    --color-border: #d3d3d3;
+    --color-black: #050505;
+    --color-white: #fff;
+}
+
+.bg{
+    background-color: var(--color-background);
+}
+
+.bg-header{
+    background-color: var(--color-header);
+}
+
+a,
+.color-primary{
+    color: var(--color-primary);
+}
+
+.color-contrast{
+    color: var(--color-contrast);
+}
+
+a:hover{
+    color: var(--color-hover-primary);
+}
+
+.bg-primary,
+.btn-primary{
+    background-color: var(--color-primary) !important;
+}
+
+.btn-primary:hover{
+    background-color: var(--color-hover-primary);
+}
+
+.color-black{
+    color: var(--color-black);
+}
+
+.rounded-custom {
+    border-radius: 30px;
+}
+
+.notify .icon{
+    font-size: 18px;
+    width:36px;
+    height: 36px;
+    display:flex;
+    justify-content:center;
+    align-items: center;
+    border-radius:5px;
+    border: 1px solid transparent;
+    color: var(--color-background);
+    background-color: var(--color-primary);
+    transition: all .4 ease-in-out;
+}
+
+.notify .icon:hover{
+    border: 1px solid var(--color-primary);
+    color: var(--color-primary);
+    background-color: var(--color-background);
+}
+
+header{
+    max-height: 80px;
+}
+
+.menu{
+    width: 265px;
+    padding-top: 62px;
+}
+
+.content{
+    width: calc(100% - 265px);
+}
+
+.user-data{
+    margin-top: -62px;
+}
+
+.user-photo{
+    width: 96px; 
+    height: 96px; 
+    font-size: 64px; 
+    font-weight: 600;
+    margin: 0 auto;
+    border: 1px solid var(--color-white);
+}
+
+.user-name{
+    color: var(--color-white);
+    font-weight: 500;
+    font-size: 24px;
+}
+
+.user-email{
+    color: var(--color-white);
+    font-weight: 300;
+    font-size: 18px;
+}
+.menu .nav{
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px; 
+}
+nav .nav-link{
+    color: var(--color-background);
+    background-color: transparent;
+    font-weight: 400;
+    letter-spacing: .5px;
+    font-size: 17px;
+    transition: all .35 ease-in-out;
+    margin:5px 0;
+}
+
+nav .nav-link:hover{
+    color: var(--color-primary);
+    background-color:var(--color-background);
+}
+
+.app-container{
+    max-height: calc(100vh - 80px);
+    height:calc(100vh - 80px);
+    overflow: hidden;
+}
+
+.nav-link.logout{
+    position: absolute;
+    bottom: 10px;
+    transition: all .3 ease-in-out;
+}
+
+.nav-link.logout:hover{
+    color: red;
+}
