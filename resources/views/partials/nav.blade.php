@@ -12,14 +12,14 @@
         <a href="{{ route('dashboard') }}" class="nav-link d-flex align-items-center">
             <i class="fas fa-home me-2"></i> Dashboard
         </a>
-        <a href="" class="nav-link d-flex align-items-center">
+        <a href="{{ route('tasks.index') }}" class="nav-link d-flex align-items-center">
             <i class="fas fa-list me-2"></i> Lista zadań
         </a>
         <a href="#" class="nav-link d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#createTaskModal">
             <i class="fas fa-plus-circle me-2"></i> Dodaj zadanie
         </a>
         @include('tasks.create_modal')
-        <a href="" class="nav-link d-flex align-items-center">
+        <a href="#" class="nav-link d-flex align-items-center disabled" >
             <i class="fas fa-user-circle me-2"></i> Profil
         </a>
         <a href="{{ route('logout') }}" class="nav-link d-flex align-items-center logout">

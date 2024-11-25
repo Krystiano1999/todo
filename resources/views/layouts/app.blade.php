@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title')</title>
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}">
@@ -36,7 +36,7 @@
             <div class="menu h-100 position-relative">
                 @include('partials.nav')
             </div>
-            <div class="content px-5 py-3 h-100">
+            <div class="content px-5 h-100">
                 @yield('content')
             </div>
         </div>

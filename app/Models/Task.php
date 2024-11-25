@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $due_date
  * @property \Illuminate\Support\Carbon $created_at
  * @property \Illuminate\Support\Carbon $updated_at
+ * @property string $priority_color
+ * @property string $status_color
  */
 class Task extends Model
 {
@@ -50,5 +52,31 @@ class Task extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the color associated with the priority.
+     */
+    public function getPriorityColorAttribute(): string
+    {
+        return match ($this->priority) {
+            'low' => 'success',    
+            'medium' => 'warning', 
+            'high' => 'danger',   
+            default => 'secondary' 
+        };
+    }
+
+    /**
+     * Get the color associated with the status.
+     */
+    public function getStatusColorAttribute(): string
+    {
+        return match ($this->status) {
+            'to-do' => 'info',         
+            'in-progress' => 'primary', 
+            'done' => 'success',      
+            default => 'secondary'     
+        };
     }
 }

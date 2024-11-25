@@ -1,7 +1,7 @@
 :root {
     --color-primary: #504acb; 
     --color-hover-primary: #533ec0;
-    --color-contrast: #afb534;
+    --color-contrast: #da2899;
     --color-background: #efefef;
     --color-header: #fefefe;
     --color-border: #d3d3d3;
@@ -78,6 +78,11 @@ header{
 
 .content{
     width: calc(100% - 265px);
+    padding-top: 62px;
+}
+
+.content .row{
+    height: calc(100% - 36px);
 }
 
 .user-data{
@@ -108,7 +113,10 @@ header{
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px; 
 }
-nav .nav-link,.nav .nav-link:active{
+nav .nav-link,
+.nav .nav-link:active,
+.nav .nav-link:focus,
+.nav .nav-link:focus-visible{
     color: var(--color-background);
     background-color: transparent;
     font-weight: 400;
@@ -137,4 +145,34 @@ nav .nav-link:hover{
 
 .nav-link.logout:hover{
     color: red;
+}
+
+.custom-border{
+    border: 2px solid var(--color-border);
+    border-radius: 15px;
+}
+
+.task-item{
+    border-radius: 8px !important;
+    background-color: transparent;
+    border: 1px solid var(--color-border);
+}
+
+.list-group-item.active{
+    background-color: transparent;
+    color: var(--color-black);
+    border: 1px solid var(--color-hover-primary);
+}
+
+.task-item p{
+    margin-bottom: .5rem;
+}
+
+.task-item p strong{
+    font-size: 20px;
+}
+
+.task-item p span{
+    font-size: 13px;
+    font-weight:700;
 }
