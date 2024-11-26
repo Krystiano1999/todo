@@ -65,4 +65,20 @@ class TaskService
         $task = $this->getTaskDetails($id);
         $task->delete();
     }
+
+    /**
+     * Update the specified task.
+     *
+     * @param int $id
+     * @param array<string, mixed> $data
+     * @return Task
+     *
+     * @throws ModelNotFoundException
+     */
+    public function updateTask(int $id, array $data): Task
+    {
+        $task = $this->getTaskDetails($id);
+        $task->update($data);
+        return $task;
+    }
 }
