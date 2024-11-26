@@ -22,9 +22,15 @@
         <a href="#" class="nav-link d-flex align-items-center disabled" >
             <i class="fas fa-user-circle me-2"></i> Profil
         </a>
-        <a href="{{ route('logout') }}" class="nav-link d-flex align-items-center logout">
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            @csrf
+        </form>
+
+        <a href="#" class="nav-link d-flex align-items-center logout"
+        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
             <i class="fas fa-sign-out-alt me-2"></i> Wyloguj się
         </a>
+
     </nav>
     
 </div>
