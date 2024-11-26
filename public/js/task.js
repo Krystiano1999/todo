@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     async function refreshTaskDetails(taskId) {
         const data = await fetchJson(`/tasks/${taskId}`);
-        if (data) {
+        if (data) {console.log(data);
             taskDetails.innerHTML = `
                 <div class="card shadow-sm h-100">
                     <div class="card-header bg-light d-flex justify-content-between align-items-center">
@@ -108,7 +108,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
                         if (!response.ok) throw new Error('Błąd podczas usuwania zadania.');
 
-                        //Swal.fire('Usunięto!', 'Zadanie zostało usunięte.', 'success');
                         toastr.success("Zadanie zostało usunięte");
                         await refreshTaskList();
 
@@ -129,4 +128,79 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     attachTaskItemClickListeners();
+
+    // Updated task
+    document.body.addEventListener('click', async function (e) {
+        if (e.target && e.target.id === 'edit-task') {
+            const taskId = e.target.dataset.id;
+            openEditModal(taskId);
+        }
+    });
+
+    async function openEditModal(taskId) {
+        const task = await fetchJson(`/tasks/${taskId}`);
+        
+        if (task) {
+            const form = document.getElementById('editTaskForm');
+            document.getElementById('edit-id').value = task.id || '';
+            document.getElementById('edit-name').value = task.name || '';
+            document.getElementById('edit-description').value = task.description || '';
+            document.getElementById('edit-priority').value = task.priority || 'low';
+            document.getElementById('edit-status').value = task.status || 'pending';
+            document.getElementById('edit-due-date').value = convertDateToISO(task.due_date);
+            new bootstrap.Modal(document.getElementById('editTaskModal')).show();
+        }
+    }
+
+    document.getElementById('editTaskForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const form = this;
+        const formData = new FormData(form);
+        const id = formData.get('id');
+        const url = `/tasks/${id}`;
+
+        const formObject = Object.fromEntries(formData.entries());
+
+        try {
+            const response = await fetch(url, {
+                method: 'PUT', // 
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                },
+                body: JSON.stringify(formObject),
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                toastr.success(result.message);
+                const modal = bootstrap.Modal.getInstance(document.getElementById('editTaskModal'));
+                modal.hide();
+                refreshTaskList();
+                refreshTaskDetails(result.data.id);
+            } else if (result.errors) {
+                handleValidationErrors(result.errors);
+            } else {
+                toastr.error(result.message || 'Wystąpił nieoczekiwany błąd.');
+            }
+        } catch (error) {
+            toastr.error('Wystąpił błąd podczas przetwarzania żądania.');
+        }
+    });
+
+    function handleValidationErrors(errors) {
+        Object.keys(errors).forEach(key => {
+            const input = document.getElementById(`edit-${key}`);
+            const errorDiv = document.getElementById(`error-edit-${key}`);
+            input.classList.add('is-invalid');
+            errorDiv.textContent = errors[key][0];
+        });
+    }
+
+    function convertDateToISO(date) {
+        if (!date) return '';
+        const [day, month, year] = date.split('/');
+        return `${year}-${month}-${day}`; //YYYY-MM-DD
+    }
 });
