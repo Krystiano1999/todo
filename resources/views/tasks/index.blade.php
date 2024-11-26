@@ -19,6 +19,7 @@
         @endif
     </div>
 </div>
+@include('tasks.edit_modal')
 @endsection
 
 @push('scripts')
