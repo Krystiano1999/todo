@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTaskRequest;
+use App\Http\Requests\UpdateTaskRequest;
 use App\Models\Task; 
 use App\Services\TaskService;
 use Illuminate\Http\JsonResponse;
@@ -87,6 +88,7 @@ class TaskController extends Controller
             'priority' => $task->priority,
             'priority_color' => $task->priority_color,
             'status' => $task->status,
+            'status_color' => $task->status_color,
             'created_at' => $task->created_at->format('d/m/Y'),
             'due_date' => $task->due_date->format('d/m/Y'),
         ]);
@@ -103,5 +105,33 @@ class TaskController extends Controller
         $this->taskService->deleteTask($id);
 
         return response()->json(['message' => 'Zadanie pomyślnie usunięte.']);
+    }
+
+    /**
+     * Update the specified task in storage.
+     *
+     * @param UpdateTaskRequest $request
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function update(UpdateTaskRequest $request, int $id): JsonResponse
+    {
+        try {
+            $task = $this->taskService->updateTask($id, $request->validated());
+
+            $task->priority_color = $task->priority_color;
+            $task->status_color = $task->status_color;
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Zadanie zostało zaktualizowane.',
+                'data' => $task,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Coś poszło nie tak, spróbuj ponownie później.',
+            ], 500);
+        }
     }
 }
