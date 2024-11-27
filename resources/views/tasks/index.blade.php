@@ -5,7 +5,12 @@
 @section('content')
 <div class="row">
     <div class="col-md-4 p-3 shadow-sm overflow-auto me-4 custom-border ">
-        <h2 class="mb-3">Moje zadania</h2>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="mb-0">Moje zadania</h2>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#filterModal">
+                <i class="fas fa-filter"></i> Filtruj
+            </button>
+        </div>
         <ul class="list-group" id="task-list">
             @each('tasks.partials.task_item', $tasks, 'task')
         </ul>
@@ -19,6 +24,7 @@
         @endif
     </div>
 </div>
+@include('tasks.filter_modal')
 @include('tasks.edit_modal')
 @endsection
 
