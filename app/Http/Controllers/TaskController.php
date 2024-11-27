@@ -129,12 +129,14 @@ class TaskController extends Controller
         try {
             $task = $this->taskService->updateTask($id, $request->validated());
 
-            $task->priority_color = $task->priority_color;
-            $task->status_color = $task->status_color;
+            $filters = []; 
+            $tasks = $this->taskService->getUserTasks($filters);
+            $taskListHtml = view('tasks.partials.task_list', compact('tasks'))->render();
 
             return response()->json([
                 'success' => true,
                 'message' => 'Zadanie zostało zaktualizowane.',
+                'task_list_html' => $taskListHtml,
                 'data' => $task,
             ]);
         } catch (\Exception $e) {

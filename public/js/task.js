@@ -158,27 +158,33 @@ document.addEventListener('DOMContentLoaded', function () {
         const formData = new FormData(form);
         const id = formData.get('id');
         const url = `/tasks/${id}`;
-
+    
         const formObject = Object.fromEntries(formData.entries());
-
+    
         try {
             const response = await fetch(url, {
-                method: 'PUT', 
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                 },
                 body: JSON.stringify(formObject),
             });
-
+    
             const result = await response.json();
-
+    
             if (response.ok) {
                 toastr.success(result.message);
+    
+                if (result.task_list_html) {
+                    taskList.innerHTML = result.task_list_html;
+                    attachTaskItemClickListeners();
+                }
+    
+                refreshTaskDetails(result.data.id);
+    
                 const modal = bootstrap.Modal.getInstance(document.getElementById('editTaskModal'));
                 modal.hide();
-                refreshTaskList();
-                refreshTaskDetails(result.data.id);
             } else if (result.errors) {
                 handleValidationErrors(result.errors);
             } else {
@@ -188,7 +194,7 @@ document.addEventListener('DOMContentLoaded', function () {
             toastr.error('Wystąpił błąd podczas przetwarzania żądania.');
         }
     });
-
+    
     function handleValidationErrors(errors) {
         Object.keys(errors).forEach(key => {
             const input = document.getElementById(`edit-${key}`);
@@ -210,7 +216,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const formData = new FormData(this);
         applyFilters(formData);
 
-        
+
         bootstrap.Modal.getInstance(document.getElementById('filterModal')).hide();
     });
 
