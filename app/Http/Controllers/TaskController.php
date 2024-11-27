@@ -9,6 +9,7 @@ use App\Services\TaskService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
+use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
@@ -50,25 +51,34 @@ class TaskController extends Controller
     }
 
     /**
-     * Display the list of tasks in the main view.
+     * Display the list of tasks in the main view with optional filters.
      *
+     * @param Request $request
      * @return View
      */
-    public function index(): View
+    public function index(Request $request): View
     {
-        $tasks = $this->taskService->getUserTasks();
+        $filters = $request->only(['priority', 'status', 'due_date_from', 'due_date_to']);
+        $tasks = $this->taskService->getUserTasks($filters);
         return view('tasks.index', compact('tasks'));
     }
 
     /**
-     * Return the HTML list of tasks for dynamic refreshing via AJAX.
+     * Return the HTML list of tasks for dynamic refreshing via AJAX with filters.
      *
-     * @return string
+     * @param Request $request
+     * @return JsonResponse
      */
-    public function list(): string
+    public function list(Request $request): JsonResponse
     {
-        $tasks = $this->taskService->getUserTasks();
-        return view('tasks.partials.task_list', compact('tasks'))->render();
+        $filters = $request->only(['priority', 'status', 'due_date_from', 'due_date_to']);
+        $tasks = $this->taskService->getUserTasks($filters);
+        $html = view('tasks.partials.task_list', compact('tasks'))->render();
+        
+        return response()->json([
+            'success' => true,
+            'html' => $html,
+        ]);
     }
 
     /**
@@ -79,7 +89,7 @@ class TaskController extends Controller
      */
     public function show(int $id): JsonResponse
     {
-        $task = $this->taskService->getTaskDetails($id);
+        $task = $this->taskService->getTaskDetails((int) $id);
 
         return response()->json([
             'id' => $task->id,
@@ -134,4 +144,5 @@ class TaskController extends Controller
             ], 500);
         }
     }
+
 }

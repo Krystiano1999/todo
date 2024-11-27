@@ -24,13 +24,29 @@ class TaskService
     /**
      * Get the list of tasks for the authenticated user.
      *
+     * @param array<string, mixed> $filters Optional filters for tasks
      * @return Collection
      */
-    public function getUserTasks(): Collection
+    public function getUserTasks(array $filters = []): Collection
     {
-        return Task::where('user_id', auth()->id())
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $query = Task::where('user_id', auth()->id());
+    
+        if (!empty($filters['priority'])) {
+            $query->whereIn('priority', $filters['priority']);
+        }
+
+        if (!empty($filters['status'])) {
+            $query->whereIn('status', $filters['status']);
+        }
+
+        if (!empty($filters['due_date_from'])) {
+            $query->where('due_date', '>=', $filters['due_date_from']);
+        }
+        if (!empty($filters['due_date_to'])) {
+            $query->where('due_date', '<=', $filters['due_date_to']);
+        }
+
+        return $query->orderBy('due_date', 'desc')->get();
     }
 
     /**
@@ -81,4 +97,5 @@ class TaskService
         $task->update($data);
         return $task;
     }
+
 }

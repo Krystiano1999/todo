@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     async function refreshTaskDetails(taskId) {
         const data = await fetchJson(`/tasks/${taskId}`);
-        if (data) {console.log(data);
+        if (data) {
             taskDetails.innerHTML = `
                 <div class="card shadow-sm h-100">
                     <div class="card-header bg-light d-flex justify-content-between align-items-center">
@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         try {
             const response = await fetch(url, {
-                method: 'PUT', // 
+                method: 'PUT', 
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
@@ -203,4 +203,53 @@ document.addEventListener('DOMContentLoaded', function () {
         const [day, month, year] = date.split('/');
         return `${year}-${month}-${day}`; //YYYY-MM-DD
     }
+
+
+    document.getElementById('filterForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        applyFilters(formData);
+
+        
+        bootstrap.Modal.getInstance(document.getElementById('filterModal')).hide();
+    });
+
+    async function applyFilters(formData) {
+        const queryString = new URLSearchParams(formData).toString();
+        const url = `/tasks-list?${queryString}`;
+    
+        try {
+            const response = await fetch(url, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                credentials: 'same-origin'
+            });
+    
+            if (!response.ok) throw new Error('Error fetching filtered tasks.');
+    
+            const result = await response.json();
+    
+            if (result.success) {
+                taskList.innerHTML = result.html;
+    
+                attachTaskItemClickListeners();
+    
+                const firstTask = document.querySelector('.task-item');
+                if (firstTask) {
+                    firstTask.classList.add('active');
+                    refreshTaskDetails(firstTask.dataset.id);
+                } else {
+                    taskDetails.innerHTML = '<p class="text-muted">Brak zadań do wyświetlenia.</p>';
+                }
+            } else {
+                toastr.error('Failed to load filtered tasks.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            toastr.error('An error occurred while fetching filtered tasks.');
+        }
+    }
+    
+    
 });
